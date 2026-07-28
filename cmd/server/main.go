@@ -5,15 +5,18 @@ import (
 	"log/slog"
 	"net/http"
 	"wallet/internal/app/api"
+	config2 "wallet/internal/app/config"
+	"wallet/internal/app/repository"
+	service2 "wallet/internal/app/service"
 )
 
 type Server struct {
 	httpServer *http.Server
 }
 
-func NewServer(handler http.Handler) *Server {
+func NewServer(config *config2.Config, handler http.Handler) *Server {
 	httpServer := &http.Server{
-		Addr:           ":8080",
+		Addr:           config.Port,
 		MaxHeaderBytes: 1 << 20,
 		Handler:        handler,
 	}
@@ -36,7 +39,10 @@ func (server *Server) Shutdown() {
 }
 
 func main() {
-	handler := api.NewHandler()
-	srv := NewServer(handler)
+	config := config2.NewConfig()
+	repo := repository.New(config)
+	service := service2.NewService(repo)
+	handler := api.NewHandler(service)
+	srv := NewServer(config, handler)
 	srv.Start()
 }

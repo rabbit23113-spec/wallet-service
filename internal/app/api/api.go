@@ -1,11 +1,16 @@
 package api
 
-import "github.com/gin-gonic/gin"
+import (
+	"wallet/internal/app/service"
+
+	"github.com/gin-gonic/gin"
+)
 
 type Handler struct {
+	service *service.Service
 }
 
-func NewHandler() *gin.Engine {
+func NewHandler(service *service.Service) *gin.Engine {
 	router := gin.New()
 
 	walletGroup := router.Group("/wallet")

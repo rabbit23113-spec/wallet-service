@@ -1,0 +1,8 @@
+port: ":3030"
+dbconfig:
+  username: "root"
+  password: "root"
+  host: "wallet_database"
+  port: "5432"
+  database: "wallet_db"
+  dsn: "postgresql://root:root@wallet_database:5432/wallet_db?sslmode=disable"
